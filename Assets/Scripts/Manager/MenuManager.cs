@@ -10,7 +10,7 @@ using Coffee.UIEffects;
 public class MenuManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Button[] menuButtons;
+    [SerializeField] Button[] gameButtons;
     [SerializeField] Image fadeImage;
 
     [Header("Effects")]
@@ -21,7 +21,7 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        foreach (Button b in menuButtons)
+        foreach (Button b in gameButtons)
         {
             b.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         }
@@ -35,6 +35,13 @@ public class MenuManager : MonoBehaviour
         EnterScene();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
     #region buttons
     public void PlayGame()
     {
@@ -48,7 +55,7 @@ public class MenuManager : MonoBehaviour
 
     public void HoverButton(int index)
     {
-        hoverButtonVFX = menuButtons[index].gameObject.GetComponent<UIShiny>();
+        hoverButtonVFX = gameButtons[index].gameObject.GetComponent<UIShiny>();
         hoverButtonVFX.Play();
     }
 
@@ -81,4 +88,6 @@ public class MenuManager : MonoBehaviour
 
         SceneManager.LoadScene(sceneIndex);
     }
+
+
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class StateMachine : MonoBehaviour
 {
-    public string State;
+    // public string State;
 
     protected State currentState;
     public State CurrentState => currentState;
@@ -47,7 +47,7 @@ public abstract class StateMachine : MonoBehaviour
         InTransition = true;
 
         // transitioning
-        currentState = previousState;
+        previousState = currentState;
         currentState?.Exit();
         currentState = newState;
         currentState?.Enter();

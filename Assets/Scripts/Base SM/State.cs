@@ -4,6 +4,11 @@ using UnityEngine;
 
 public abstract class State : MonoBehaviour
 {
+    private void Awake()
+    {
+
+    }
+
     public virtual void Enter()
     {
 
