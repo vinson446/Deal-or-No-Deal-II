@@ -10,7 +10,7 @@ public class DealerState : GameState
 
         stateMachine.state = "Dealer Offer";
 
-        uiManager.gameText.text = "Your dealer is making you an offer of ";
+        uiManager.GameText.text = "Your dealer is making you an offer of ";
 
         ShowDealerUI();
     }

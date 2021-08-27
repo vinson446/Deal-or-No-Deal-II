@@ -8,14 +8,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] Dictionary<int, string> cases = new Dictionary<int, string>();
     public Dictionary<int, string> Cases => cases;
 
-    [SerializeField] int caseIndex;
-    public int CaseIndex { get => caseIndex; set => caseIndex = value; }
+    [SerializeField] int selectedCaseIndex;
+    public int SelectedCaseIndex { get => selectedCaseIndex; set => selectedCaseIndex = value; }
 
     [SerializeField] int dealerStageIndex;
-    public int DealerStageIndex => dealerStageIndex;
+    public int DealerStageIndex { get => dealerStageIndex; set => dealerStageIndex = value; }
 
     [Header("Debugger")]
-    public List<string> casesChecker;
+    [SerializeField] List<string> casesChecker;
+    public List<string> CasesChecker { get => casesChecker; set => casesChecker = value; }
 
     // Start is called before the first frame update
     void Awake()

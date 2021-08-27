@@ -21,23 +21,23 @@ public class GameState : State
 
     protected void ShowDealerUI()
     {
-        foreach (Button b in uiManager.dealButtons)
+        foreach (Button b in uiManager.DealButtons)
         {
             b.gameObject.SetActive(true);
         }
-        uiManager.offerText.gameObject.SetActive(true);
+        uiManager.OfferText.gameObject.SetActive(true);
 
-        uiManager.continueButton.gameObject.SetActive(false);
+        uiManager.ContinueButton.gameObject.SetActive(false);
     }
 
     protected void ShowContinueButton()
     {
-        foreach (Button b in uiManager.dealButtons)
+        foreach (Button b in uiManager.DealButtons)
         {
             b.gameObject.SetActive(false);
         }
-        uiManager.offerText.gameObject.SetActive(false);
+        uiManager.OfferText.gameObject.SetActive(false);
 
-        uiManager.continueButton.gameObject.SetActive(true);
+        uiManager.ContinueButton.gameObject.SetActive(true);
     }
 }

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Case : MonoBehaviour
 {
-    public int caseNum;
-    public bool selected;
+    [SerializeField] int caseNum;
+    public int CaseNum => caseNum;
+    [SerializeField] bool chosen;
+    public bool Chosen => chosen;
+
+    [SerializeField] bool selected;
+    public bool Selected => selected;
 
     Renderer rend;
     Color currentMaterial;
 
-    SelectACaseState selectACaseState;
+    ChooseCaseState selectACaseState;
     RemoveCasesState removeCasesState;
 
     // Start is called before the first frame update
@@ -19,7 +24,7 @@ public class Case : MonoBehaviour
         rend = GetComponentInChildren<Renderer>();
         currentMaterial = rend.material.color;
 
-        selectACaseState = FindObjectOfType<SelectACaseState>();
+        selectACaseState = FindObjectOfType<ChooseCaseState>();
         removeCasesState = FindObjectOfType<RemoveCasesState>();
     }
 
@@ -28,12 +33,18 @@ public class Case : MonoBehaviour
     {
         
     }
+    
+    public void ClearCaseSelected()
+    {
+        selected = false;
+    }
 
-    public void CaseSelected()
+    public void CaseChosen()
     {
         if (!selected)
         {
             rend.material.color = Color.green;
+            chosen = true;
             selected = true;
 
             selectACaseState.SelectedCaseNum = caseNum;
@@ -41,24 +52,37 @@ public class Case : MonoBehaviour
         else
         {
             rend.material.color = currentMaterial;
+            chosen = false;
             selected = false;
 
             selectACaseState.SelectedCaseNum = -1;
         }
     }
 
-    // NEEDS WORK
     public void CaseRemoved()
     {
-        if (!selected)
+        if (!chosen)
         {
-            rend.material.color = Color.red;
-            selected = true;
-        }
-        else
-        {
-            rend.material.color = currentMaterial;
-            selected = false;
+            if (!selected)
+            {
+                if (removeCasesState.NumCasesToRemove > 0)
+                {
+                    rend.material.color = Color.red;
+                    selected = true;
+
+                    removeCasesState.NumCasesToRemove--;
+                    removeCasesState.CasesToRemoveThisRound.Add(caseNum);
+                }
+            }
+            else
+            {
+                rend.material.color = currentMaterial;
+                selected = false;
+
+                removeCasesState.NumCasesToRemove++;
+                removeCasesState.CasesToRemoveThisRound.Remove(caseNum);
+
+            }
         }
     }
 }

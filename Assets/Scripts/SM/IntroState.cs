@@ -14,10 +14,10 @@ public class IntroState : GameState
 
         stateMachine.state = "Intro";
 
-        uiManager.gameText.text = "Welcome to Deal or No Deal II";
+        uiManager.GameText.text = "Welcome to Deal or No Deal II";
 
         ShowContinueButton();
-        uiManager.continueButton.onClick.AddListener(EndIntro);
+        uiManager.ContinueButton.onClick.AddListener(EndIntro);
     }
 
     public override void Tick()
@@ -29,23 +29,15 @@ public class IntroState : GameState
     {
         base.Exit();
 
-        uiManager.continueButton.onClick.RemoveListener(EndIntro);
+        uiManager.ContinueButton.onClick.RemoveListener(EndIntro);
     }
 
     public void EndIntro()
     {
-        DisableInputFields();
+        uiManager.DisableInputFields();
         ShuffleCases();
 
-        stateMachine.ChangeState<SelectACaseState>();
-    }
-
-    void DisableInputFields()
-    {
-        foreach (TMP_InputField i in uiManager.inputFields)
-        {
-            i.DeactivateInputField();
-        }
+        stateMachine.ChangeState<ChooseCaseState>();
     }
 
     void ShuffleCases()
@@ -54,8 +46,8 @@ public class IntroState : GameState
         {
             int index = Random.Range(0, caseNums.Count - 1);
 
-            gameManager.Cases.Add(i, uiManager.inputFields[index].text);
-            gameManager.casesChecker.Add(uiManager.inputFields[index].text);
+            gameManager.Cases.Add(i, uiManager.InputFields[index].text);
+            gameManager.CasesChecker.Add(uiManager.InputFields[index].text);
 
             caseNums.Remove(index);
         }

@@ -10,6 +10,9 @@ public class RemoveCasesState : GameState
     [SerializeField] Case caseSelected;
     public Case CaseSelected => caseSelected;
 
+    [SerializeField] List<int> casesToRemoveThisRound;
+    public List<int> CasesToRemoveThisRound { get => casesToRemoveThisRound; set => casesToRemoveThisRound = value; }
+
     public override void Enter()
     {
         base.Enter();
@@ -19,24 +22,24 @@ public class RemoveCasesState : GameState
         switch (gameManager.DealerStageIndex)
         {
             case 0:
-                uiManager.gameText.text = "Remove 4 Cases";
+                uiManager.GameText.text = "Remove 4 Cases";
                 numCasesToRemove = 4;
                 break;
             case 1:
-                uiManager.gameText.text = "Remove 3 Cases";
+                uiManager.GameText.text = "Remove 3 Cases";
                 numCasesToRemove = 3;
                 break;
             case 2:
-                uiManager.gameText.text = "Remove 2 Cases";
+                uiManager.GameText.text = "Remove 2 Cases";
                 numCasesToRemove = 2;
                 break;
             case 3:
-                uiManager.gameText.text = "Remove 1 Case";
+                uiManager.GameText.text = "Remove 1 Case";
                 numCasesToRemove = 1;
                 break;
         }
 
-        uiManager.continueButton.onClick.AddListener(EndSelectACase);
+        uiManager.ContinueButton.onClick.AddListener(EndRemoveCases);
     }
 
     public override void Tick()
@@ -50,10 +53,9 @@ public class RemoveCasesState : GameState
     {
         base.Exit();
 
-        uiManager.continueButton.onClick.RemoveListener(EndSelectACase);
+        uiManager.ContinueButton.onClick.RemoveListener(EndRemoveCases);
     }
 
-    // NEEDS WORK
     void RemoveCases()
     {
         if (Input.GetMouseButtonUp(0))
@@ -65,21 +67,23 @@ public class RemoveCasesState : GameState
             {
                 if (hit.collider.tag == "Case")
                 {
-                    if (caseSelected != null)
-                        caseSelected.CaseSelected();
-
                     caseSelected = hit.collider.GetComponent<Case>();
 
-                    caseSelected.CaseSelected();
+                    caseSelected.CaseRemoved();
                 }
             }
         }
     }
 
-    void EndSelectACase()
+    void EndRemoveCases()
     {
         if (numCasesToRemove == 0)
         {
+            caseSelected.ClearCaseSelected();
+
+            gameManager.DealerStageIndex++;
+            uiManager.RemoveCasesUI(casesToRemoveThisRound);
+
             stateMachine.ChangeState<DealerState>();
         }
     }

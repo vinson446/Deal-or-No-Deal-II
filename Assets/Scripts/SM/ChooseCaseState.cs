@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectACaseState : GameState
+public class ChooseCaseState : GameState
 {
     [SerializeField] int selectedCaseNum;
     public int SelectedCaseNum { get => selectedCaseNum; set => selectedCaseNum = value; }
@@ -16,26 +16,26 @@ public class SelectACaseState : GameState
 
         stateMachine.state = "Select a Case";
 
-        uiManager.gameText.text = "Choose your Case";
+        uiManager.GameText.text = "Choose your Case";
 
-        uiManager.continueButton.onClick.AddListener(EndSelectACase);
+        uiManager.ContinueButton.onClick.AddListener(EndChooseCase);
     }
 
     public override void Tick()
     {
         base.Tick();
 
-        ChooseACase();
+        ChooseCase();
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        uiManager.continueButton.onClick.RemoveListener(EndSelectACase);
+        uiManager.ContinueButton.onClick.RemoveListener(EndChooseCase);
     }
 
-    void ChooseACase()
+    void ChooseCase()
     {
         if (Input.GetMouseButtonUp(0))
         {
@@ -47,21 +47,23 @@ public class SelectACaseState : GameState
                 if (hit.collider.tag == "Case")
                 {
                     if (caseSelected != null)
-                        caseSelected.CaseSelected();
+                        caseSelected.CaseChosen();
 
                     caseSelected = hit.collider.GetComponent<Case>();
 
-                    caseSelected.CaseSelected();
+                    caseSelected.CaseChosen();
                 }
             }
         }
     }
 
-    void EndSelectACase()
+    void EndChooseCase()
     {
         if (selectedCaseNum != -1)
         {
-            gameManager.CaseIndex = selectedCaseNum;
+            caseSelected.ClearCaseSelected();
+
+            gameManager.SelectedCaseIndex = selectedCaseNum;
 
             stateMachine.ChangeState<RemoveCasesState>();
         }
