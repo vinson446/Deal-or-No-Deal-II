@@ -11,10 +11,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] int selectedCaseIndex;
     public int SelectedCaseIndex { get => selectedCaseIndex; set => selectedCaseIndex = value; }
 
+    [SerializeField] string selectedCase;
+    public string SelectedCase { get => selectedCase; set => selectedCase = value; }
+
+    [SerializeField] string endDeal;
+    public string EndDeal { get => endDeal; set => endDeal = value; }
+
+    [Header("Debugger")]
     [SerializeField] int dealerStageIndex;
     public int DealerStageIndex { get => dealerStageIndex; set => dealerStageIndex = value; }
 
-    [Header("Debugger")]
     [SerializeField] List<string> casesChecker;
     public List<string> CasesChecker { get => casesChecker; set => casesChecker = value; }
 

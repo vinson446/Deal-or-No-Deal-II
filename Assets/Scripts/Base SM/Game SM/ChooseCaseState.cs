@@ -64,6 +64,7 @@ public class ChooseCaseState : GameState
             caseSelected.ClearCaseSelected();
 
             gameManager.SelectedCaseIndex = selectedCaseNum;
+            gameManager.SelectedCase = gameManager.Cases[selectedCaseNum];
 
             stateMachine.ChangeState<RemoveCasesState>();
         }

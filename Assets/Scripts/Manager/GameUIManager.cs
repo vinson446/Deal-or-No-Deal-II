@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+public class GameUIManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TMP_InputField[] inputFields;
@@ -22,10 +22,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_InputField offerText;
     public TMP_InputField OfferText { get => offerText; set => offerText = value; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    GameManager gameManager;
 
+    // Start is called before the first frame update
+    void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -47,6 +49,11 @@ public class UIManager : MonoBehaviour
 
     public void RemoveCasesUI(List<int> caseIndexes)
     {
-
+        for (int i = 0; i < caseIndexes.Count; i++)
+        {
+            var inputFieldColor = inputFields[caseIndexes[i]].colors;
+            inputFieldColor.disabledColor = Color.red;
+            inputFields[caseIndexes[i]].colors = inputFieldColor;
+        }
     }
 }

@@ -9,14 +9,16 @@ public class GameState : State
     protected GameSM stateMachine;
 
     protected GameManager gameManager;
-    protected UIManager uiManager;
+    protected MenuManager menuManager;
+    protected GameUIManager uiManager;
 
     private void Awake()
     {
         stateMachine = GetComponent<GameSM>();
 
         gameManager = FindObjectOfType<GameManager>();
-        uiManager = FindObjectOfType<UIManager>();
+        menuManager = FindObjectOfType<MenuManager>();
+        uiManager = FindObjectOfType<GameUIManager>();
     }
 
     protected void ShowDealerUI()
@@ -30,7 +32,7 @@ public class GameState : State
         uiManager.ContinueButton.gameObject.SetActive(false);
     }
 
-    protected void ShowContinueButton()
+    protected void ShowContinueUI()
     {
         foreach (Button b in uiManager.DealButtons)
         {

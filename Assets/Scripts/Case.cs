@@ -12,10 +12,13 @@ public class Case : MonoBehaviour
     [SerializeField] bool selected;
     public bool Selected => selected;
 
+    [SerializeField] bool removed;
+    public bool Removed { get => removed; set => removed = value; }
+
     Renderer rend;
     Color currentMaterial;
 
-    ChooseCaseState selectACaseState;
+    ChooseCaseState chooseCaseState;
     RemoveCasesState removeCasesState;
 
     // Start is called before the first frame update
@@ -24,7 +27,7 @@ public class Case : MonoBehaviour
         rend = GetComponentInChildren<Renderer>();
         currentMaterial = rend.material.color;
 
-        selectACaseState = FindObjectOfType<ChooseCaseState>();
+        chooseCaseState = FindObjectOfType<ChooseCaseState>();
         removeCasesState = FindObjectOfType<RemoveCasesState>();
     }
 
@@ -47,7 +50,7 @@ public class Case : MonoBehaviour
             chosen = true;
             selected = true;
 
-            selectACaseState.SelectedCaseNum = caseNum;
+            chooseCaseState.SelectedCaseNum = caseNum;
         }
         else
         {
@@ -55,13 +58,13 @@ public class Case : MonoBehaviour
             chosen = false;
             selected = false;
 
-            selectACaseState.SelectedCaseNum = -1;
+            chooseCaseState.SelectedCaseNum = -1;
         }
     }
 
     public void CaseRemoved()
     {
-        if (!chosen)
+        if (!chosen && !removed)
         {
             if (!selected)
             {
@@ -71,7 +74,8 @@ public class Case : MonoBehaviour
                     selected = true;
 
                     removeCasesState.NumCasesToRemove--;
-                    removeCasesState.CasesToRemoveThisRound.Add(caseNum);
+                    removeCasesState.CasesToRemove.Add(this);
+                    removeCasesState.CaseIndexesToRemove.Add(caseNum);
                 }
             }
             else
@@ -80,7 +84,8 @@ public class Case : MonoBehaviour
                 selected = false;
 
                 removeCasesState.NumCasesToRemove++;
-                removeCasesState.CasesToRemoveThisRound.Remove(caseNum);
+                removeCasesState.CasesToRemove.Remove(this);
+                removeCasesState.CaseIndexesToRemove.Remove(caseNum);
 
             }
         }

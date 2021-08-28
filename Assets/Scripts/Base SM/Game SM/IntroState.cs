@@ -16,7 +16,7 @@ public class IntroState : GameState
 
         uiManager.GameText.text = "Welcome to Deal or No Deal II";
 
-        ShowContinueButton();
+        ShowContinueUI();
         uiManager.ContinueButton.onClick.AddListener(EndIntro);
     }
 

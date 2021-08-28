@@ -73,7 +73,7 @@ public class MenuManager : MonoBehaviour
         fadeImage.DOFade(0, fadeInDuration);
     }
 
-    void ExitScene(int sceneIndex)
+    public void ExitScene(int sceneIndex)
     {
         StartCoroutine(FadeOutTransition(sceneIndex));
     }
@@ -88,6 +88,4 @@ public class MenuManager : MonoBehaviour
 
         SceneManager.LoadScene(sceneIndex);
     }
-
-
 }

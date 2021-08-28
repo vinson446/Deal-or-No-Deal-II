@@ -10,8 +10,11 @@ public class RemoveCasesState : GameState
     [SerializeField] Case caseSelected;
     public Case CaseSelected => caseSelected;
 
-    [SerializeField] List<int> casesToRemoveThisRound;
-    public List<int> CasesToRemoveThisRound { get => casesToRemoveThisRound; set => casesToRemoveThisRound = value; }
+    [SerializeField] List<Case> casesToRemove;
+    public List<Case> CasesToRemove { get => casesToRemove; set => casesToRemove = value; }
+
+    [SerializeField] List<int> caseIndexesToRemove;
+    public List<int> CaseIndexesToRemove { get => caseIndexesToRemove; set => caseIndexesToRemove = value; }
 
     public override void Enter()
     {
@@ -39,6 +42,7 @@ public class RemoveCasesState : GameState
                 break;
         }
 
+        ShowContinueUI();
         uiManager.ContinueButton.onClick.AddListener(EndRemoveCases);
     }
 
@@ -79,10 +83,16 @@ public class RemoveCasesState : GameState
     {
         if (numCasesToRemove == 0)
         {
+            foreach (Case c in casesToRemove)
+            {
+                c.Removed = true;
+            }
             caseSelected.ClearCaseSelected();
 
             gameManager.DealerStageIndex++;
-            uiManager.RemoveCasesUI(casesToRemoveThisRound);
+            uiManager.RemoveCasesUI(caseIndexesToRemove);
+
+            caseIndexesToRemove.Clear();
 
             stateMachine.ChangeState<DealerState>();
         }
