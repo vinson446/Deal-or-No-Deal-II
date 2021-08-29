@@ -25,25 +25,26 @@ public class RemoveCasesState : GameState
         switch (gameManager.DealerStageIndex)
         {
             case 0:
-                uiManager.GameText.text = "Remove 4 Cases";
+                uiManager.SetGameText("Remove 4 Cases");
                 numCasesToRemove = 4;
                 break;
             case 1:
-                uiManager.GameText.text = "Remove 3 Cases";
+                uiManager.SetGameText("Remove 3 Cases");
                 numCasesToRemove = 3;
                 break;
             case 2:
-                uiManager.GameText.text = "Remove 2 Cases";
+                uiManager.SetGameText("Remove 2 Cases");
                 numCasesToRemove = 2;
                 break;
             case 3:
-                uiManager.GameText.text = "Remove 1 Case";
+                uiManager.SetGameText("Remove 1 Cases");
                 numCasesToRemove = 1;
                 break;
         }
 
-        ShowContinueUI();
+        uiManager.ShowContinueUI();
         uiManager.ContinueButton.onClick.AddListener(EndRemoveCases);
+        uiManager.ContinueButton.onClick.AddListener(audioManager.PlayRemoveCasesSFX);
     }
 
     public override void Tick()
@@ -58,6 +59,7 @@ public class RemoveCasesState : GameState
         base.Exit();
 
         uiManager.ContinueButton.onClick.RemoveListener(EndRemoveCases);
+        uiManager.ContinueButton.onClick.RemoveListener(audioManager.PlayRemoveCasesSFX);
     }
 
     void RemoveCases()
@@ -86,8 +88,8 @@ public class RemoveCasesState : GameState
             foreach (Case c in casesToRemove)
             {
                 c.Removed = true;
+                caseSelected.ClearCaseSelected();
             }
-            caseSelected.ClearCaseSelected();
 
             gameManager.DealerStageIndex++;
             uiManager.RemoveCasesUI(caseIndexesToRemove);

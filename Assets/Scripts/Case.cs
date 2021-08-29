@@ -15,6 +15,9 @@ public class Case : MonoBehaviour
     [SerializeField] bool removed;
     public bool Removed { get => removed; set => removed = value; }
 
+    [Header("Debugger")]
+    [SerializeField] string caseContents;
+
     Renderer rend;
     Color currentMaterial;
 

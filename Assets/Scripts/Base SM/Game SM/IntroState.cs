@@ -6,18 +6,19 @@ using TMPro;
 
 public class IntroState : GameState
 {
-    List<int> caseNums = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-
     public override void Enter()
     {
         base.Enter();
 
         stateMachine.state = "Intro";
 
-        uiManager.GameText.text = "Welcome to Deal or No Deal II";
+        uiManager.SetGameText("Welcome to Deal or No Deal II,\n" +
+            "Fill in your cases");
+        uiManager.ShowContinueUI();
 
-        ShowContinueUI();
         uiManager.ContinueButton.onClick.AddListener(EndIntro);
+
+        uiManager.ContinueButton.onClick.AddListener(audioManager.PlayButtonSFX);
     }
 
     public override void Tick()
@@ -30,6 +31,8 @@ public class IntroState : GameState
         base.Exit();
 
         uiManager.ContinueButton.onClick.RemoveListener(EndIntro);
+
+        uiManager.ContinueButton.onClick.RemoveListener(audioManager.PlayButtonSFX);
     }
 
     public void EndIntro()
@@ -44,12 +47,20 @@ public class IntroState : GameState
     {
         for (int i = 0; i < 12; i++)
         {
-            int index = Random.Range(0, caseNums.Count - 1);
+            gameManager.CasesChecker.Add(uiManager.InputFields[i].text);
+        }
 
-            gameManager.Cases.Add(i, uiManager.InputFields[index].text);
-            gameManager.CasesChecker.Add(uiManager.InputFields[index].text);
+        for (int i = 0; i < 12; i++)
+        {
+            TMP_InputField tmp = uiManager.InputFields[i];
+            string stringTMP = gameManager.CasesChecker[i];
 
-            caseNums.Remove(index);
+            int randIndex = Random.Range(0, 12);
+
+            uiManager.InputFields[i] = uiManager.InputFields[randIndex];
+            uiManager.InputFields[randIndex] = tmp;
+            gameManager.CasesChecker[i] = gameManager.CasesChecker[randIndex];
+            gameManager.CasesChecker[randIndex] = stringTMP;
         }
     }
 }

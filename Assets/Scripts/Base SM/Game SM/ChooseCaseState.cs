@@ -14,11 +14,13 @@ public class ChooseCaseState : GameState
     {
         base.Enter();
 
-        stateMachine.state = "Select a Case";
+        stateMachine.state = "Choose Case";
 
-        uiManager.GameText.text = "Choose your Case";
+        uiManager.SetGameText("Now choose your Case");
 
         uiManager.ContinueButton.onClick.AddListener(EndChooseCase);
+
+        uiManager.ContinueButton.onClick.AddListener(audioManager.PlayButtonSFX);
     }
 
     public override void Tick()
@@ -33,6 +35,8 @@ public class ChooseCaseState : GameState
         base.Exit();
 
         uiManager.ContinueButton.onClick.RemoveListener(EndChooseCase);
+
+        uiManager.ContinueButton.onClick.RemoveListener(audioManager.PlayButtonSFX);
     }
 
     void ChooseCase()
@@ -64,7 +68,7 @@ public class ChooseCaseState : GameState
             caseSelected.ClearCaseSelected();
 
             gameManager.SelectedCaseIndex = selectedCaseNum;
-            gameManager.SelectedCase = gameManager.Cases[selectedCaseNum];
+            gameManager.SelectedCase = gameManager.CasesChecker[selectedCaseNum];
 
             stateMachine.ChangeState<RemoveCasesState>();
         }
